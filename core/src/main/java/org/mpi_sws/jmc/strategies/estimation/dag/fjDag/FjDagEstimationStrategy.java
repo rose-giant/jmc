@@ -9,10 +9,11 @@ import org.mpi_sws.jmc.runtime.HaltTaskException;
 import org.mpi_sws.jmc.runtime.JmcRuntimeEvent;
 import org.mpi_sws.jmc.runtime.scheduling.SchedulingChoice;
 import org.mpi_sws.jmc.strategies.RandomSchedulingStrategy;
-import org.mpi_sws.jmc.strategies.estimation.EstimationCollector;
 import org.mpi_sws.jmc.strategies.estimation.EstimationStrategy;
 import org.mpi_sws.jmc.strategies.trust.Event;
+import org.mpi_sws.jmc.util.FileUtil;
 
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 import java.util.random.RandomGeneratorFactory;
@@ -23,7 +24,7 @@ public class FjDagEstimationStrategy extends RandomSchedulingStrategy implements
 
     private final FjDagEstimator est;
 
-    private final EstimationCollector estimationCollector = new EstimationCollector();
+    private final StringBuilder estimatorCollector = new StringBuilder();
 
     public FjDagEstimationStrategy(Long seed) {
         // TODO : Fix the hard coded path
@@ -73,13 +74,8 @@ public class FjDagEstimationStrategy extends RandomSchedulingStrategy implements
     public void resetIteration(int iteration) {
         super.resetIteration(iteration);
         LOGGER.debug("Finished iteration {} with expected value: {}", iteration, est.getExpectedValue());
-        recordEstimation();
+        estimatorCollector.append(est.getExpectedValue()).append(System.lineSeparator());
         est.reset();
-    }
-
-    @Override
-    public void recordEstimation() {
-        estimationCollector.record(est.getExpectedValue());
     }
 
     @Override
@@ -90,14 +86,12 @@ public class FjDagEstimationStrategy extends RandomSchedulingStrategy implements
     }
 
     protected void saveResults() {
-        estimationCollector.save(
-                "build/test-results/jmc-report/",
-                "fj-pestor-result.txt",
-                "fj-pestor-final-result.txt");
+        FileUtil.unsafeStoreToFile(
+                Paths.get("build/test-results/jmc-report/", "FjDagEstimateResult.txt").toString(), estimatorCollector.toString());
     }
 
-    public EstimationCollector getEstimationCollector() {
-        return estimationCollector;
+    public StringBuilder getEstimatorCollector() {
+        return estimatorCollector;
     }
 
 

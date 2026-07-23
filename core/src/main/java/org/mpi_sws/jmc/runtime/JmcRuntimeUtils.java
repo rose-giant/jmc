@@ -447,6 +447,22 @@ public class JmcRuntimeUtils {
         syncMethodLocksStore.clear();
     }
 
+    /** Hooks run once per iteration reset, so library code built on top of jmc (e.g. {@code
+     *  org.mpi_sws.jmc.api.mp}) can clear its own static per-iteration state alongside jmc's own. */
+    private static final java.util.List<Runnable> iterationResetHooks =
+            new java.util.concurrent.CopyOnWriteArrayList<>();
+
+    /** Registers a hook to run on every iteration reset (see {@code JmcRuntime#resetIteration}). */
+    public static void registerIterationResetHook(Runnable hook) {
+        iterationResetHooks.add(hook);
+    }
+
+    /** Runs every hook registered via {@link #registerIterationResetHook}. */
+    public static void runIterationResetHooks() {
+        for (Runnable hook : iterationResetHooks) {
+            hook.run();
+        }
+    }
     /**
      * Maps instance/class-name hash codes to the {@link JmcReentrantLock}s that back instrumented
      * {@code synchronized} methods and blocks.

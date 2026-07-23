@@ -8,15 +8,17 @@ import org.mpi_sws.jmc.runtime.HaltExecutionException;
 import org.mpi_sws.jmc.runtime.HaltTaskException;
 import org.mpi_sws.jmc.runtime.JmcRuntimeEvent;
 import org.mpi_sws.jmc.runtime.scheduling.SchedulingChoice;
-import org.mpi_sws.jmc.strategies.estimation.EstimationCollector;
 import org.mpi_sws.jmc.strategies.estimation.EstimationStrategy;
 import org.mpi_sws.jmc.strategies.trust.TrustStrategy;
+import org.mpi_sws.jmc.util.FileUtil;
+
+import java.nio.file.Paths;
 
 public class TestorStrategy extends TrustStrategy implements EstimationStrategy {
 
     private final Logger LOGGER = LogManager.getLogger(TestorStrategy.class);
     protected final Testor testor;
-    protected final EstimationCollector estimationCollector = new EstimationCollector();
+    protected final StringBuilder estimatorCollector = new StringBuilder();
 
     public TestorStrategy() {
         this(System.nanoTime(), SchedulingPolicy.FIFO, false, "build/test-results/jmc-report");
@@ -44,7 +46,7 @@ public class TestorStrategy extends TrustStrategy implements EstimationStrategy 
             super.initIteration(iteration, report);
         } catch (HaltCheckerException e) {
             if (e.isOkay() && algoInstance.isStackEmpty() && testor.isDone()) {
-                recordEstimation();
+                recordEstimation(iteration);
                 algoInstance.clear();
                 testor.reset();
             } else if (e.isOkay() && algoInstance.isStackEmpty()) {
@@ -68,14 +70,13 @@ public class TestorStrategy extends TrustStrategy implements EstimationStrategy 
                 LOGGER.debug(e.getMessage());
             }
         }
-        recordEstimation();
+        recordEstimation(iteration);
         algoInstance.clear();
         testor.reset();
     }
 
-    @Override
-    public void recordEstimation() {
-        estimationCollector.record(testor.getRealExpectedValue());
+    private void recordEstimation(int iteration) {
+        estimatorCollector.append(testor.getRealExpectedValue()).append(System.lineSeparator());
     }
 
     /**
@@ -126,9 +127,7 @@ public class TestorStrategy extends TrustStrategy implements EstimationStrategy 
     }
 
     protected void saveResults() {
-        estimationCollector.save(
-                "build/test-results/jmc-report/",
-                "testor-estimation-result.txt",
-                "testor-final-result.txt");
+        FileUtil.unsafeStoreToFile(
+                Paths.get("build/test-results/jmc-report/", "TestorEstimateResult.txt").toString(), estimatorCollector.toString());
     }
 }

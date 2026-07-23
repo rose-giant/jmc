@@ -193,10 +193,16 @@ public class JmcRuntime {
      *
      * @param iteration the iteration number being reset
      */
+//    public static void resetIteration(int iteration) {
+//        scheduler.resetIteration(iteration);
+//        taskManager.reset();
+//        JmcRuntimeUtils.clearSyncLocks();
+//    }
     public static void resetIteration(int iteration) {
         scheduler.resetIteration(iteration);
         taskManager.reset();
         JmcRuntimeUtils.clearSyncLocks();
+        JmcRuntimeUtils.runIterationResetHooks();
     }
 
     /**

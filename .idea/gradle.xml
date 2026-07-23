@@ -5,13 +5,14 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="21" />
         <option name="modules">
           <set>
-            <option value="/local/home/mkhoshechin/Documents/Refactoring/jmc" />
-            <option value="/local/home/mkhoshechin/Documents/Refactoring/jmc/agent" />
-            <option value="/local/home/mkhoshechin/Documents/Refactoring/jmc/core" />
-            <option value="/local/home/mkhoshechin/Documents/Refactoring/jmc/gradle-plugin" />
-            <option value="/local/home/mkhoshechin/Documents/Refactoring/jmc/integration-test" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/agent" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/gradle-plugin" />
+            <option value="$PROJECT_DIR$/integration-test" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -23,7 +23,7 @@ public class TrustEstimator implements MetaTreeEstimator {
 
     protected int expectedValue = 1;
 
-    protected final StringBuilder treeLogger = new StringBuilder();
+    protected final StringBuilder treeLogger = new StringBuilder().append("$Iteration_0").append(System.lineSeparator());
 
     protected long graphId = 1L;
 

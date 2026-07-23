@@ -320,5 +320,10 @@ public class JmcRuntimeEvent {
 
         //Executor tracking event
         EXECUTOR_SHUTDOWN_EVENT,
+
+        // Message-passing API (Must) events — org.mpi_sws.jmc.api.mp
+        MP_SEND_EVENT,
+        MP_RECV_EVENT,
+        MP_RECV_BLOCKED_EVENT,
     }
 }

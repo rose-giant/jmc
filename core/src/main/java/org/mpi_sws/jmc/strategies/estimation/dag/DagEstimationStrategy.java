@@ -7,13 +7,14 @@ import org.mpi_sws.jmc.runtime.HaltExecutionException;
 import org.mpi_sws.jmc.runtime.HaltTaskException;
 import org.mpi_sws.jmc.runtime.JmcRuntimeEvent;
 import org.mpi_sws.jmc.strategies.RandomSchedulingStrategy;
-import org.mpi_sws.jmc.strategies.estimation.EstimationCollector;
 import org.mpi_sws.jmc.strategies.estimation.EstimationStrategy;
 import org.mpi_sws.jmc.strategies.estimation.MetaGraphEstimator;
 import org.mpi_sws.jmc.strategies.trust.Event;
 import org.mpi_sws.jmc.strategies.trust.EventFactory;
 import org.mpi_sws.jmc.strategies.trust.LocationStore;
+import org.mpi_sws.jmc.util.FileUtil;
 
+import java.nio.file.Paths;
 import java.util.List;
 
 public class DagEstimationStrategy extends RandomSchedulingStrategy implements EstimationStrategy {
@@ -22,7 +23,7 @@ public class DagEstimationStrategy extends RandomSchedulingStrategy implements E
 
     private final MetaGraphEstimator est;
 
-    private final EstimationCollector estimationCollector = new EstimationCollector();
+    private final StringBuilder estimatorCollector = new StringBuilder();
 
 
     /**
@@ -61,13 +62,8 @@ public class DagEstimationStrategy extends RandomSchedulingStrategy implements E
     public void resetIteration(int iteration) {
         super.resetIteration(iteration);
         LOGGER.debug("Finished iteration {} with expected value: {}", iteration, est.getExpectedValue());
-        recordEstimation();
+        estimatorCollector.append(est.getExpectedValue()).append(System.lineSeparator());
         est.reset();
-    }
-
-    @Override
-    public void recordEstimation() {
-        estimationCollector.record(est.getExpectedValue());
     }
 
     @Override
@@ -78,7 +74,11 @@ public class DagEstimationStrategy extends RandomSchedulingStrategy implements E
     }
 
     protected void saveResults() {
-        estimationCollector.save(
-                "build/test-results/jmc-report/", "pestor-result.txt", "pestor-final-result.txt");
+        FileUtil.unsafeStoreToFile(
+                Paths.get("build/test-results/jmc-report/", "DagEstimateResult.txt").toString(), estimatorCollector.toString());
+    }
+
+    public StringBuilder getEstimatorCollector() {
+        return estimatorCollector;
     }
 }

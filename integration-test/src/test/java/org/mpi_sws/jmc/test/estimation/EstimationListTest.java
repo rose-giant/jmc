@@ -205,9 +205,11 @@ public class EstimationListTest {
 
 
     @JmcCheck
-    @JmcCheckConfiguration(numIterations = 100, schedulingPolicy = TrustStrategy.SchedulingPolicy.FIFO, strategy = "testor", debug = false, budget = 2, timeout = 60000L)
+    @JmcCheckConfiguration(numIterations = 100,
+            schedulingPolicy = TrustStrategy.SchedulingPolicy.FIFO,
+            strategy = "testor", debug = false, budget = 20, timeout = 60000L)
     public void runCoarseListITestor() {
-        coarseListIProgram(3);
+        coarseListIProgram(9);
     }
 
     /**
