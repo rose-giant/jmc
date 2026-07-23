@@ -102,7 +102,6 @@ public class MustApiTest {
         JmcAssert.check(observed.size() == 2, "monitor should observe exactly 2 sends");
     }
 
-//    todo: fix this test
     @JmcCheck
     @JmcCheckConfiguration(numIterations = 200)
     public void runPingPong() {

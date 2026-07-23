@@ -91,7 +91,7 @@ public class TrackWaitNotify extends TrackLocks {
                 this.availableTasks.put(objectId, new HashSet<>());
                 this.activeTasks.removeAll(availableList);
             }
-            case NOTIFY_EVENT -> {
+            case NOTIFY_EVENT, NOTIFY_ALL_EVENT -> {
                 int objectId = event.getParam("object").hashCode();
                 Set<Long> waitingList =
                         this.waitingTasks.computeIfAbsent(objectId, k -> new HashSet<>());
@@ -101,18 +101,6 @@ public class TrackWaitNotify extends TrackLocks {
                 this.availableTasks.put(objectId, availableList);
                 this.activeTasks.addAll(waitingList);
                 waitingList.clear();
-                this.waitingTasks.put(objectId, waitingList);
-            }
-            case NOTIFY_ALL_EVENT -> {
-                int objectId = event.getParam("object").hashCode();
-                Set<Long> waitingList =
-                        this.waitingTasks.computeIfAbsent(objectId, k -> new HashSet<>());
-                this.activeTasks.addAll(waitingList);
-                waitingList.clear();
-                Set<Long> availableList =
-                        this.availableTasks.computeIfAbsent(objectId, k -> new HashSet<>());
-                this.activeTasks.addAll(availableList);
-                this.availableTasks.put(objectId, new HashSet<>());
                 this.waitingTasks.put(objectId, waitingList);
             }
         }
