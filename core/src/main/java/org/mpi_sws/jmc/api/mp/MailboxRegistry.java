@@ -1,4 +1,4 @@
-package main.java.org.mpi_sws.jmc.api.mp;
+package org.mpi_sws.jmc.api.mp;
 
 import java.util.HashMap;
 import java.util.Map;

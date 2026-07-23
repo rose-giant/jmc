@@ -1,4 +1,4 @@
-package org.mpi_sws.jmc.test.programs;
+package org.mpi_sws.jmc.programs;
 
 import org.mpi_sws.jmc.annotations.JmcCheck;
 import org.mpi_sws.jmc.annotations.JmcCheckConfiguration;
@@ -102,18 +102,21 @@ public class MustApiTest {
         JmcAssert.check(observed.size() == 2, "monitor should observe exactly 2 sends");
     }
 
+//    todo: fix this test
     @JmcCheck
     @JmcCheckConfiguration(numIterations = 200)
     public void runPingPong() {
         pingPong();
     }
 
+    //    todo: fix this test
     @JmcCheck
     @JmcCheckConfiguration(numIterations = 200)
     public void runP2pFifoOrdering() {
         p2pFifoOrdering();
     }
 
+    //    todo: fix this test
     @JmcCheck
     @JmcCheckConfiguration(numIterations = 200)
     public void runSelectiveReceiveAndNondet() {
@@ -126,6 +129,7 @@ public class MustApiTest {
         nonBlockingReceiveReturnsEmpty();
     }
 
+//    todo: fix this test
     @JmcCheck
     @JmcCheckConfiguration(numIterations = 200)
     public void runMonitorExample() {
