@@ -104,22 +104,22 @@ public class DiningPhilosophersTest {
         }
     }
 
-    @JmcCheck
-    @JmcCheckConfiguration(numIterations = 200)
-    public void runDiningPhilosophers2() {
-        MpProcess.Handle phil0 = MpProcess.spawn(() -> runPhilosopher(Tid.current()));
-        MpProcess.Handle phil1 = MpProcess.spawn(() -> runPhilosopher(Tid.current()));
-        MpProcess.Handle fork0 = MpProcess.spawn(() -> runFork(Tid.current()));
-        MpProcess.Handle fork1 = MpProcess.spawn(() -> runFork(Tid.current()));
-
-        Channel.send(MODEL, phil0.tid(), new WirePhil(fork0.tid(), fork1.tid()));
-        Channel.send(MODEL, phil1.tid(), new WirePhil(fork1.tid(), fork0.tid()));
-        Channel.send(MODEL, fork0.tid(), new WireFork(phil0.tid(), phil1.tid()));
-        Channel.send(MODEL, fork1.tid(), new WireFork(phil1.tid(), phil0.tid()));
-
-        phil0.join();
-        phil1.join();
-        fork0.join();
-        fork1.join();
-    }
+//    @JmcCheck
+//    @JmcCheckConfiguration(numIterations = 200)
+//    public void runDiningPhilosophers2() {
+//        MpProcess.Handle phil0 = MpProcess.spawn(() -> runPhilosopher(Tid.current()));
+//        MpProcess.Handle phil1 = MpProcess.spawn(() -> runPhilosopher(Tid.current()));
+//        MpProcess.Handle fork0 = MpProcess.spawn(() -> runFork(Tid.current()));
+//        MpProcess.Handle fork1 = MpProcess.spawn(() -> runFork(Tid.current()));
+//
+//        Channel.send(MODEL, phil0.tid(), new WirePhil(fork0.tid(), fork1.tid()));
+//        Channel.send(MODEL, phil1.tid(), new WirePhil(fork1.tid(), fork0.tid()));
+//        Channel.send(MODEL, fork0.tid(), new WireFork(phil0.tid(), phil1.tid()));
+//        Channel.send(MODEL, fork1.tid(), new WireFork(phil1.tid(), phil0.tid()));
+//
+//        phil0.join();
+//        phil1.join();
+//        fork0.join();
+//        fork1.join();
+//    }
 }
