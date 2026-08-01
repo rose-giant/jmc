@@ -108,19 +108,17 @@ public class MustApiTest {
         pingPong();
     }
 
-    //    todo: fix this test
     @JmcCheck
     @JmcCheckConfiguration(numIterations = 200)
     public void runP2pFifoOrdering() {
         p2pFifoOrdering();
     }
 
-//    //    todo: fix this test
-//    @JmcCheck
-//    @JmcCheckConfiguration(numIterations = 200)
-//    public void runSelectiveReceiveAndNondet() {
-//        selectiveReceiveAndNondet();
-//    }
+    @JmcCheck
+    @JmcCheckConfiguration(numIterations = 200)
+    public void runSelectiveReceiveAndNondet() {
+        selectiveReceiveAndNondet();
+    }
 
     @JmcCheck
     @JmcCheckConfiguration(numIterations = 50)
@@ -128,10 +126,9 @@ public class MustApiTest {
         nonBlockingReceiveReturnsEmpty();
     }
 
-////    todo: fix this test
-//    @JmcCheck
-//    @JmcCheckConfiguration(numIterations = 200)
-//    public void runMonitorExample() {
-//        monitorExample();
-//    }
+    @JmcCheck
+    @JmcCheckConfiguration(numIterations = 200)
+    public void runMonitorExample() {
+        monitorExample();
+    }
 }
